@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code — Linda Debra Memorial</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0c0b0a;
+            color: #e8e4dd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .card {
+            background: #1a1917;
+            border: 1px solid rgba(201, 169, 110, 0.12);
+            border-radius: 20px;
+            padding: 48px;
+            text-align: center;
+            max-width: 460px;
+            width: 100%;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+        }
+
+        .dove { font-size: 2.2rem; margin-bottom: 16px; }
+
+        h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #e8e4dd;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: #6b665e;
+            margin-bottom: 32px;
+            letter-spacing: 0.5px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #c9a96e;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 18px;
+            background: #222120;
+            border: 1px solid rgba(201, 169, 110, 0.2);
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: #e8e4dd;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"]::placeholder { color: #6b665e; }
+
+        input[type="text"]:focus {
+            border-color: #c9a96e;
+            box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.1);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 32px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.3s, background 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn--primary {
+            background: linear-gradient(135deg, #c9a96e, #a88940);
+            color: white;
+            margin-bottom: 32px;
+        }
+
+        .btn--primary:hover {
+            box-shadow: 0 4px 20px rgba(201, 169, 110, 0.3);
+        }
+
+        .btn--secondary {
+            background: rgba(201, 169, 110, 0.1);
+            color: #c9a96e;
+            border: 1px solid rgba(201, 169, 110, 0.2);
+        }
+
+        .btn--secondary:hover {
+            background: rgba(201, 169, 110, 0.15);
+            box-shadow: 0 4px 16px rgba(201, 169, 110, 0.1);
+        }
+
+        #qr-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #qr-container.visible { display: flex; }
+
+        #qr-code {
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 0 40px rgba(201, 169, 110, 0.08);
+        }
+
+        #qr-code canvas { display: block; }
+
+        .qr-label {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: #9a958d;
+            margin-bottom: 20px;
+        }
+
+        .divider {
+            width: 32px;
+            height: 1px;
+            background: rgba(201, 169, 110, 0.3);
+            margin: 28px auto;
+        }
+
+        .instructions {
+            text-align: left;
+        }
+
+        .instructions h3 {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #c9a96e;
+            margin-bottom: 12px;
+        }
+
+        .instructions ol {
+            font-size: 0.82rem;
+            font-weight: 300;
+            color: #9a958d;
+            padding-left: 18px;
+            line-height: 2;
+        }
+
+        .instructions li::marker {
+            color: #c9a96e;
+        }
+
+        @media (max-width: 480px) {
+            .card { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="dove">🕊️</div>
+        <h1>Linda Debra Memorial</h1>
+        <p class="subtitle">Generate a QR code to share this memorial</p>
+
+        <div>
+            <label for="url-input">Website URL</label>
+            <input type="text" id="url-input" placeholder="https://linda-debra-memorial.netlify.app">
+        </div>
+
+        <button class="btn btn--primary" onclick="generateQR()">Generate QR Code</button>
+
+        <div id="qr-container">
+            <div id="qr-code"></div>
+            <p class="qr-label">Scan to visit Linda's memorial</p>
+            <button class="btn btn--secondary" onclick="downloadQR()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download QR Code
+            </button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="instructions">
+            <h3>How to Use</h3>
+            <ol>
+                <li>Deploy the memorial website online</li>
+                <li>Enter the live URL above</li>
+                <li>Generate and download the QR code</li>
+                <li>Print on memorial cards, programs, or frames</li>
+            </ol>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>
+        function generateQR() {
+            const url = document.getElementById('url-input').value.trim();
+            if (!url) { alert('Please enter a website URL.'); return; }
+
+            const container = document.getElementById('qr-code');
+            container.innerHTML = '';
+
+            const canvas = document.createElement('canvas');
+            container.appendChild(canvas);
+
+            QRCode.toCanvas(canvas, url, {
+                width: 260,
+                margin: 2,
+                color: { dark: '#1a1917', light: '#ffffff' },
+                errorCorrectionLevel: 'H'
+            }, function (error) {
+                if (error) { alert('Error generating QR code.'); return; }
+                document.getElementById('qr-container').classList.add('visible');
+            });
+        }
+
+        function downloadQR() {
+            const canvas = document.querySelector('#qr-code canvas');
+            if (!canvas) return;
+
+            const dl = document.createElement('canvas');
+            const ctx = dl.getContext('2d');
+            const pad = 48;
+            const label = 56;
+
+            dl.width = canvas.width + pad * 2;
+            dl.height = canvas.height + pad * 2 + label;
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, dl.width, dl.height);
+
+            ctx.drawImage(canvas, pad, pad);
+
+            ctx.fillStyle = '#1a1917';
+            ctx.font = '15px Georgia, serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🕊️ In Loving Memory of Linda Debra', dl.width / 2, canvas.height + pad + 36);
+
+            const link = document.createElement('a');
+            link.download = 'linda-debra-memorial-qr.png';
+            link.href = dl.toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>
